@@ -46,7 +46,6 @@ export function Footer() {
           <div className="flex items-center gap-1.5">
             {[
               { href: RESTAURANT.instagram, icon: "instagram" as const, label: "اینستاگرام اکسیژن" },
-              { href: RESTAURANT.telegram, icon: "telegram" as const, label: "تلگرام اکسیژن" },
               { href: `tel:${RESTAURANT.phone}`, icon: "phone" as const, label: "تماس با اکسیژن" },
             ].map((s) => (
               <a
@@ -109,14 +108,7 @@ export function Footer() {
             Made with
             <Heartbeat />
             by
-            <a
-              href="https://t.me/mathewrepresents"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center font-bold text-mist-200 underline-offset-4 transition-colors hover:text-flame-600 hover:underline"
-            >
-              Mathew
-            </a>
+            <span className="font-bold text-mist-200">Mathew</span>
           </span>
 
           <Link

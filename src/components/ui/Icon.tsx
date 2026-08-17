@@ -30,7 +30,6 @@ export type IconName =
   | "edit"
   | "trash"
   | "instagram"
-  | "telegram"
   | "flame";
 
 const PATHS: Record<IconName, React.ReactNode> = {
@@ -156,14 +155,6 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <circle cx="12" cy="12" r="3.9" />
       {/* Flash dot: filled so it holds its weight at 16px. */}
       <circle cx="16.9" cy="7.1" r="1.05" fill="currentColor" stroke="none" />
-    </>
-  ),
-  telegram: (
-    <>
-      {/* Outer plane */}
-      <path d="M21.2 4.3 2.9 11.4a.42.42 0 0 0 .03.79l4.7 1.45 1.77 5.3a.42.42 0 0 0 .72.15l2.5-2.86 4.63 3.4a.42.42 0 0 0 .66-.24l3.9-14.6a.42.42 0 0 0-.6-.49Z" />
-      {/* Inner fold — the detail that makes it read as Telegram rather than a generic arrow. */}
-      <path d="m7.63 13.64 11-7.3-8.35 8.6" />
     </>
   ),
   flame: (

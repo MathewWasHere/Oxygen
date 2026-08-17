@@ -85,8 +85,8 @@ export function ProductDetail({ product, related }: { product: Product; related:
                 className={cn(
                   "grid size-11 place-items-center rounded-full border backdrop-blur-md transition-all",
                   fav
-                    ? "border-flame-600/50 bg-flame-600/25 text-flame-600"
-                    : "border-[var(--surface-border)] bg-black/40 text-white/70",
+                    ? "border-flame-600 bg-flame-600 text-white"
+                    : "border-[var(--surface-border)] bg-ink-950 text-white",
                 )}
               >
                 <Icon name="heart" filled={fav} className="size-5" />

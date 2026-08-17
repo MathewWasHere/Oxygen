@@ -7,14 +7,14 @@ import type { Category, Coupon, DeliveryZone, Product } from "@/lib/types";
  *   /food/<slug>.webp      800×800
  *   /food/<slug>-sm.webp   400×400
  *
- * No prices were supplied. A numeric zero is intentionally used as the
- * temporary placeholder requested by the restaurant owner.
+ * Prices and opening hours are explicitly hypothetical placeholders until the
+ * restaurant supplies its final commercial information.
  */
 
 export const RESTAURANT = {
   name: "فست فود اکسیژن",
   nameLatin: "OXYGEN",
-  tagline: "طعمی که دوباره دلت می‌خواد",
+  tagline: "هر لقمه، یک نفس تازه",
   phone: "+987153340472",
   phoneDisplay: "۰۷۱-۵۳۳۴۰۴۷۲",
   address: "فسا، ابتدای فاز ۴، نرسیده به مجتمع گلشهر",
@@ -23,11 +23,10 @@ export const RESTAURANT = {
   lat: 28.9505657,
   lng: 53.6252939,
   mapUrl: "https://maps.app.goo.gl/qtRmApR5TeDQTy6z8",
-  hours: "همه روزه ۱۸:۰۰ تا ۰۱:۰۰ بامداد",
-  openFrom: 18,
+  hours: "همه‌روزه ۱۱:۰۰ تا ۰۱:۰۰ بامداد",
+  openFrom: 11,
   openTo: 1,
   instagram: "https://www.instagram.com/fastfoodoxygen/",
-  telegram: "https://t.me/",
 } as const;
 
 export const categories: Category[] = [
@@ -107,6 +106,51 @@ const productSeeds: ProductSeed[] = [
   { slug: "soda-family", categoryId: "c9", name: "نوشابه خانواده", shortDescription: "نوشابه خانواده در طعم‌های موجود", ingredients: ["نوشابه گازدار"], prepMinutes: 1 },
 ];
 
+/** Hypothetical launch prices in toman, pending the restaurant's final price list. */
+const HYPOTHETICAL_PRICES: Record<string, number> = {
+  "pizza-four-season-28": 590000,
+  "pizza-four-season-32": 790000,
+  "pizza-oxygen-23": 430000,
+  "pizza-roast-beef-23": 520000,
+  "pizza-vegetables-23": 390000,
+  "pizza-special-25": 510000,
+  "pizza-special-28": 620000,
+  "pizza-mixed-32": 760000,
+  "pizza-chicken-mushroom-23": 450000,
+  "pizza-mexican-23": 430000,
+  "pizza-mix-23": 450000,
+  "pizza-mix-32": 760000,
+  "pizza-pepperoni-23": 420000,
+  "pizza-pepperoni-28": 560000,
+  "pizza-greek-23": 400000,
+  "pizza-greek-32": 700000,
+  "pizza-greek-28": 530000,
+  "burger-60": 220000,
+  "burger-90": 320000,
+  cheeseburger: 280000,
+  "cheeseburger-60": 250000,
+  "bomb-sandwich": 450000,
+  "snack-special": 190000,
+  "snack-mixed": 170000,
+  "snack-mexican": 180000,
+  "fried-chicken-fillet-2": 190000,
+  "fried-chicken-fillet-4": 340000,
+  "fried-chicken-fillet-6": 480000,
+  "fried-chicken-fillet-8": 620000,
+  "fried-mushroom": 170000,
+  fries: 120000,
+  "fries-cheese": 180000,
+  "fries-cheese-mushroom": 220000,
+  "pasta-penne": 330000,
+  "caesar-salad-fried-chicken": 320000,
+  "water-small": 20000,
+  "lemonade-family": 90000,
+  "lemonade-glass": 45000,
+  "soda-zamzam-orange": 40000,
+  "soda-pepsi-bottle": 45000,
+  "soda-family": 95000,
+};
+
 export const products: Product[] = productSeeds.map((seed, index) => ({
   id: `p${index + 1}`,
   slug: seed.slug,
@@ -115,7 +159,7 @@ export const products: Product[] = productSeeds.map((seed, index) => ({
   shortDescription: seed.shortDescription,
   description: `${seed.shortDescription}. این آیتم از منوی تصویری رسمی فست فود اکسیژن ثبت شده است.`,
   ingredients: seed.ingredients,
-  price: 0,
+  price: HYPOTHETICAL_PRICES[seed.slug] ?? 0,
   image: `/food/${seed.slug}.webp`,
   popular: seed.popular ?? false,
   available: true,
@@ -128,7 +172,7 @@ export const products: Product[] = productSeeds.map((seed, index) => ({
 
 export const deliveryZones: DeliveryZone[] = [
   { id: "z1", name: "مرکز شهر فسا", fee: 20000, etaMinutes: 30, minOrder: 200000, active: true },
-  { id: "z2", name: "فاز ۴ و مجتمع گلشهر", fee: 20000, etaMinutes: 30, minOrder: 200000, active: true },
+  { id: "z2", name: "بلوار امام خمینی", fee: 20000, etaMinutes: 30, minOrder: 200000, active: true },
   { id: "z3", name: "شهرک ولیعصر", fee: 30000, etaMinutes: 40, minOrder: 250000, active: true },
   { id: "z4", name: "میان‌جنگل و حومه", fee: 45000, etaMinutes: 55, minOrder: 300000, active: true },
 ];

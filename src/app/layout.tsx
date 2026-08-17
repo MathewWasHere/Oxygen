@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s | فست فود اکسیژن",
   },
   description:
-    "سفارش آنلاین مستقیم از فست فود اکسیژن در فسا. برگر، پیتزا، ساندویچ و سوخاری تازه با ارسال سریع. طعمی که دوباره دلت می‌خواد.",
+    "سفارش آنلاین مستقیم از فست فود اکسیژن در فسا. برگر، پیتزا، ساندویچ و سوخاری تازه با ارسال سریع. هر لقمه، یک نفس تازه.",
   keywords: ["فست فود اکسیژن", "اکسیژن فسا", "سفارش آنلاین غذا فسا", "پیتزا فسا", "برگر فسا"],
   applicationName: "اکسیژن",
   manifest: "/manifest.webmanifest",
@@ -63,7 +63,7 @@ const jsonLd = {
     addressCountry: "IR",
   },
   geo: { "@type": "GeoCoordinates", latitude: RESTAURANT.lat, longitude: RESTAURANT.lng },
-  openingHours: "Mo-Su 18:00-01:00",
+  openingHours: "Mo-Su 11:00-01:00",
   hasMap: RESTAURANT.mapUrl,
   url: "https://oxygen.ir",
   acceptsReservations: false,

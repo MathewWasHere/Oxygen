@@ -12,8 +12,8 @@ import { cn } from "@/lib/cn";
  * one word, and only expands to include the hours once there is room.
  */
 
-const OPEN_HOUR = 18; // 18:00
-const CLOSE_HOUR = 1; // 01:00 next day
+const OPEN_HOUR = RESTAURANT.openFrom;
+const CLOSE_HOUR = RESTAURANT.openTo;
 
 function computeOpen(d: Date): boolean {
   const h = d.getHours();
@@ -49,7 +49,7 @@ export function OpenStatus({ className }: { className?: string }) {
       <span>{open ? "باز است" : "بسته است"}</span>
       {/* Hours only appear where the header has room to breathe. */}
       <span className="num hidden text-mist-400 lg:inline" dir="ltr">
-        {toFa("۱۸:۰۰–۰۱:۰۰")}
+        {toFa("۱۱:۰۰–۰۱:۰۰")}
       </span>
     </span>
   );

@@ -804,3 +804,74 @@ body {
   /* Sits behind the icon so it never intercepts hover styling. */
   z-index: 0;
 }
+
+/* ==========================================================================
+   COMPACT MOBILE DENSITY
+
+   Oxygen's customer flow is intentionally denser than the desktop shell. The
+   root scale reduces every rem-based control, radius, gap and padding by 12.5%
+   on phones, while the targeted type rules gently compress the legacy pixel
+   sizes. Form fields remain at 16px to prevent iOS focus zoom.
+   ========================================================================== */
+@media (max-width: 639.98px) {
+  html {
+    font-size: 14px;
+  }
+
+  body {
+    line-height: 1.45;
+  }
+
+  .shell {
+    padding-inline: 0.75rem;
+  }
+
+  .pad-panel {
+    padding: 0.75rem;
+  }
+
+  .pad-card {
+    padding: 0.625rem;
+  }
+
+  .gap-section {
+    gap: 1rem;
+  }
+
+  :where([class*="text-[22px]"]) {
+    font-size: 19px !important;
+  }
+  :where([class*="text-[18px]"]) {
+    font-size: 16px !important;
+  }
+  :where([class*="text-[17px]"]) {
+    font-size: 15px !important;
+  }
+  :where([class*="text-[16px]"]) {
+    font-size: 14px !important;
+  }
+  :where([class*="text-[15px]"]) {
+    font-size: 13.5px !important;
+  }
+  :where([class*="text-[14.5px]"]) {
+    font-size: 13px !important;
+  }
+  :where([class*="text-[14px]"]) {
+    font-size: 12.5px !important;
+  }
+  :where([class*="text-[13.5px]"]) {
+    font-size: 12px !important;
+  }
+  :where([class*="text-[13px]"]) {
+    font-size: 12px !important;
+  }
+  :where([class*="text-[12.5px]"]) {
+    font-size: 11.5px !important;
+  }
+  :where([class*="text-[12px]"]) {
+    font-size: 11px !important;
+  }
+  :where([class*="text-[11px]"]) {
+    font-size: 10.5px !important;
+  }
+}

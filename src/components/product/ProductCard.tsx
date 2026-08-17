@@ -67,7 +67,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
               aria-label={fav ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}
               className={cn(
                 "-m-1 grid size-11 shrink-0 place-items-center rounded-full transition-colors",
-                fav ? "text-flame-500" : "text-mist-500",
+                fav ? "bg-flame-600 text-white" : "bg-ink-800 text-mist-300",
               )}
             >
               <Icon name="heart" filled={fav} className="size-5" />
@@ -151,14 +151,14 @@ export function ProductCard({ product, priority }: { product: Product; priority?
           </div>
 
           <div className="pointer-events-none absolute inset-x-3 bottom-3 flex flex-wrap items-center gap-1.5">
-            <span className="inline-flex items-center gap-1 rounded-md bg-ink-950/85 px-1.5 py-1 leading-none">
+            <span className="inline-flex items-center gap-1 rounded-md bg-ink-950 px-1.5 py-1 leading-none">
               <Icon name="star" filled className="size-3 shrink-0 text-gold-500" />
               <span className="num text-[12.5px] font-bold text-white">
                 {toFa(product.rating.toFixed(1))}
               </span>
             </span>
-            <span className="inline-flex items-center gap-1 rounded-md bg-ink-950/85 px-1.5 py-1 leading-none">
-              <Icon name="clock" className="size-3 shrink-0 text-white/80" />
+            <span className="inline-flex items-center gap-1 rounded-md bg-ink-950 px-1.5 py-1 leading-none">
+              <Icon name="clock" className="size-3 shrink-0 text-white" />
               <span className="num text-[12.5px] font-bold text-white">
                 {toFa(product.prepMinutes)} دقیقه
               </span>
@@ -173,7 +173,7 @@ export function ProductCard({ product, priority }: { product: Product; priority?
             "absolute left-3 top-3 grid size-9 place-items-center rounded-full border transition-colors",
             fav
               ? "border-flame-600 bg-flame-600 text-white"
-              : "border-white/25 bg-ink-950/80 text-white hover:bg-ink-950",
+              : "border-white/25 bg-ink-950 text-white hover:bg-ink-800",
           )}
         >
           <Icon name="heart" filled={fav} className="size-[18px]" />
