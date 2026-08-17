@@ -1,0 +1,806 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   OXYGEN — Design System
+   Visual hierarchy: BLACK → WHITE → ORANGE ACCENT
+   ========================================================================== */
+
+/* ==========================================================================
+   TYPOGRAPHY — Snapp Web 2.0 (items 8 & 9)
+
+   The family ships three weights: Light 200, Regular 400, Bold 700.
+   The UI, however, uses 500 and 800 in ~150 places. Rather than rewrite every
+   class, each real file claims a WEIGHT RANGE, so the browser always resolves
+   to a genuine cut and never synthesises a faux/smeared bold:
+
+       200-300  -> Light
+       400-600  -> Regular   (covers font-medium 500)
+       700-900  -> Bold      (covers font-extrabold 800)
+
+   woff2 is listed first and woff second: modern browsers take the ~33 KB
+   woff2, older ones fall back to the ~43 KB woff. Vazirmatn remains in the
+   stack purely as a fallback for any glyph Snapp lacks.
+   ========================================================================== */
+@font-face {
+  font-family: "SnappWeb";
+  src:
+    url("/fonts/SnappWeb2.0-Light.woff2") format("woff2"),
+    url("/fonts/SnappWeb2.0-Light.woff") format("woff");
+  font-weight: 200 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SnappWeb";
+  src:
+    url("/fonts/SnappWeb2.0-Regular.woff2") format("woff2"),
+    url("/fonts/SnappWeb2.0-Regular.woff") format("woff");
+  font-weight: 400 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "SnappWeb";
+  src:
+    url("/fonts/SnappWeb2.0-Bold.woff2") format("woff2"),
+    url("/fonts/SnappWeb2.0-Bold.woff") format("woff");
+  font-weight: 700 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback family — only used for glyphs Snapp Web does not cover. */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/Vazirmatn-400.woff2") format("woff2");
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/Vazirmatn-700.woff2") format("woff2");
+  font-weight: 700 900;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "SnappWeb", "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink-950: #000000;
+  --color-ink-900: #0a0a0a;
+  --color-ink-850: #101012;
+  --color-ink-800: #141417;
+  --color-ink-700: #1b1b1f;
+  --color-ink-600: #232328;
+  --color-ink-500: #2e2e34;
+
+  /* ------------------------------------------------------------------ *
+   * BRAND PALETTE  (solid colours only — no gradient ramps anywhere)
+   *   Crimson  #E0163D  primary brand / accent
+   *   Red      #DA291C  strong CTA / action
+   *   Yellow   #FFC72C  small attention accent (prices, promos, badges)
+   *   White    #FFFFFF  dominant surface
+   *
+   * The flame-* token names are retained so ~300 existing usages adopt the
+   * palette centrally. 500 = crimson, 600 = action red; the darker steps are
+   * hover/active states only, never gradient stops.
+   * ------------------------------------------------------------------ */
+  --color-flame-300: #f7889b;
+  --color-flame-400: #ea4a68;
+  --color-flame-500: #e0163d;  /* crimson — brand */
+  --color-flame-600: #da291c;  /* red — action */
+  --color-flame-700: #b21f15;  /* red hover */
+  --color-flame-800: #8c1810;  /* red active */
+
+  /* Golden yellow accent */
+  --color-gold-400: #ffd75e;
+  --color-gold-500: #ffc72c;
+  --color-gold-600: #e0ab13;
+  --color-gold-700: #a87d06;
+
+  --color-mist-100: #ffffff;
+  --color-mist-200: #d6d6d6;
+  --color-mist-300: #b8b8b8;
+  --color-mist-400: #999999;
+  --color-mist-500: #6b6b6b;
+
+  --color-ok: #2ecc71;
+  --color-warn: #f5a623;
+  --color-danger: #ff4d4f;
+
+  --radius-card: 1.25rem;
+}
+
+:root {
+  --shell-max: 1240px;
+}
+
+/* ------------------------------------------------------------------ *
+ * THEMING
+ * The UI is built on semantic tokens (ink-* surfaces, mist-* text).
+ * Each theme re-maps those tokens, so every component follows along
+ * without duplicating a second visual system.
+ * ------------------------------------------------------------------ */
+
+/* LIGHT — default */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-ink-950: #f6f6f7;  /* page background (near-white) */
+  --color-ink-900: #ffffff;  /* raised surface / bars */
+  --color-ink-850: #ffffff;  /* cards */
+  --color-ink-800: #f2f2f4;  /* inputs */
+  --color-ink-700: #ebebee;  /* subtle fills */
+  --color-ink-600: #e2e2e6;  /* hover fills */
+  --color-ink-500: #d6d6dc;  /* borders-ish */
+
+  --color-mist-100: #000000;  /* primary text */
+  --color-mist-200: #26262b;  /* secondary text */
+  --color-mist-300: #46464e;  /* tertiary text */
+  --color-mist-400: #62626b;  /* muted text */
+  --color-mist-500: #83838d;  /* faint text */
+
+  --surface-border: rgba(0, 0, 0, 0.10);
+  --surface-border-strong: rgba(0, 0, 0, 0.16);
+  --surface-card: #ffffff;
+  --surface-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 4px 16px -8px rgba(0, 0, 0, 0.10);
+  --hairline: rgba(0, 0, 0, 0.08);
+  --white-a4: rgba(0, 0, 0, 0.035);
+  --white-a6: rgba(0, 0, 0, 0.05);
+  --white-a8: rgba(0, 0, 0, 0.07);
+  --white-a10: rgba(0, 0, 0, 0.09);
+  --scrim: rgba(255, 255, 255, 0.88);
+}
+
+/* DARK — the original night identity */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Accent lift for dark surfaces: the brand crimson/red are too dark to read
+     as TEXT on black. Fills keep the exact brand colours (white text on
+     flame-500/600); only the text-tint steps brighten here. */
+  --color-flame-500: #ff4d6d;
+  --color-flame-600: #ff5a4a;
+  --color-gold-500: #ffd24d;
+
+  --color-ink-950: #000000;
+  --color-ink-900: #0a0a0a;
+  --color-ink-850: #101012;
+  --color-ink-800: #141417;
+  --color-ink-700: #1b1b1f;
+  --color-ink-600: #232328;
+  --color-ink-500: #2e2e34;
+
+  --color-mist-100: #ffffff;
+  --color-mist-200: #d6d6d6;
+  --color-mist-300: #b8b8b8;
+  --color-mist-400: #999999;
+  --color-mist-500: #6b6b6b;
+
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border-strong: rgba(255, 255, 255, 0.14);
+  --surface-card: #101012;
+  --surface-shadow: none;
+  --hairline: rgba(255, 255, 255, 0.07);
+  --white-a4: rgba(255, 255, 255, 0.04);
+  --white-a6: rgba(255, 255, 255, 0.06);
+  --white-a8: rgba(255, 255, 255, 0.08);
+  --white-a10: rgba(255, 255, 255, 0.10);
+  --scrim: rgba(0, 0, 0, 0.88);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: var(--color-ink-950);
+  color: var(--color-mist-100);
+  /* RTL: clamp horizontal scroll on BOTH elements, otherwise a stray wide
+     child shifts the whole document and creates a phantom 20-30px gutter. */
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "ss02";
+  position: relative;
+}
+
+::selection {
+  background: var(--color-flame-600);
+  color: #fff;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink-900);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--white-a10);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-flame-700);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Focus visibility — accessibility is not sacrificed for visuals */
+:focus-visible {
+  outline: 2px solid var(--color-flame-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- Brand utilities ---------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2rem;
+  }
+}
+
+.surface {
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--surface-shadow);
+}
+
+/* ==========================================================================
+   RESPONSIVE DENSITY SCALE (items 21-25)
+
+   Mobile and desktop are two separate design decisions, not one value scaled.
+   Previously ~19 panels hard-coded `p-4` / `p-3.5`, so the compaction added
+   for phones was inherited by 1440px screens and desktop looked squeezed.
+
+   These three utilities encode the intended rhythm ONCE:
+
+                 mobile        tablet (>=640)   desktop (>=1024)
+     .pad-panel   0.875rem      1.125rem         1.5rem
+     .pad-card    0.75rem       1rem             1.25rem
+     .gap-section 1.25rem       1.75rem          2.25rem
+
+   Mobile stays tight and efficient; desktop breathes. Fix the scale here and
+   every surface follows — no per-page patches.
+   ========================================================================== */
+.pad-panel {
+  padding: 0.875rem;
+}
+.pad-card {
+  padding: 0.75rem;
+}
+.gap-section {
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .pad-panel {
+    padding: 1.125rem;
+  }
+  .pad-card {
+    padding: 1rem;
+  }
+  .gap-section {
+    gap: 1.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pad-panel {
+    padding: 1.5rem;
+  }
+  .pad-card {
+    padding: 1.25rem;
+  }
+  .gap-section {
+    gap: 2.25rem;
+  }
+}
+
+.surface-hover {
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+/* Hover lift is neutral: the brand colour stays on the border, the shadow is
+   plain elevation. A coloured shadow reads as a glow. */
+.surface-hover:hover {
+  border-color: rgba(224, 22, 61, 0.45);
+  box-shadow: 0 10px 28px -16px rgba(0, 0, 0, 0.28);
+}
+
+.glow-ring {
+  box-shadow: 0 0 0 1px rgba(224, 22, 61, 0.35);
+}
+
+/* Solid brand fill (was a gradient). Kept under the same class name so all
+   existing call-sites pick up the flat colour with no markup churn. */
+.flame-gradient {
+  background: var(--color-flame-600);
+}
+
+.hairline {
+  border-color: var(--hairline);
+}
+
+/* Persian numerals stay tabular for prices */
+.num {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Animations (subtle, purposeful) ---------- */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.animate-sheet-in {
+  animation: sheet-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.animate-pop {
+  animation: pop 0.35s ease-out;
+}
+
+/* Pulse halo inherits the dot's own colour via currentColor, so an emerald
+   "online" dot pulses green and a crimson "live" dot pulses crimson. It was
+   previously hard-coded crimson, which tinted the emerald dots red.
+   Radius reduced 10px -> 6px and opacity softened: the halo should read as a
+   quiet heartbeat, not a strobe (item 15). */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 currentColor;
+    opacity: 1;
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+    opacity: 0.9;
+  }
+}
+/* --------------------------------------------------------------------------
+   LIVE STATUS RING (order timeline active step)
+
+   A slow, low-amplitude ring that breathes outward from the circle's edge.
+   Deliberately NOT a glow: it animates a ring's spread+alpha, so it reads as
+   "this step is live" without a neon halo. Sits on ::after so it cannot
+   affect layout or the circle's centring.
+   -------------------------------------------------------------------------- */
+@keyframes live-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(224, 22, 61, 0.30);
+  }
+  70% {
+    box-shadow: 0 0 0 9px rgba(224, 22, 61, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 22, 61, 0);
+  }
+}
+.live-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  animation: live-ring 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2.4s ease-out infinite;
+}
+
+@keyframes marquee-rtl {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(50%);
+  }
+}
+.animate-marquee {
+  animation: marquee-rtl 26s linear infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION — single authoritative block (item 16).
+   One-shot entrance animations collapse to an instant final frame; infinite
+   decorative loops (pulse / ping / marquee / heartbeat) stop outright rather
+   than freezing at a random keyframe.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-pulse-dot,
+  .animate-ping-slow,
+  .animate-marquee,
+  .animate-heartbeat,
+  .live-ring::after {
+    animation: none !important;
+  }
+}
+
+/* Safe area for mobile bottom nav */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* --------------------------------------------------------------------------
+   FLOATING ISLAND NAV METRICS (items 13-18)
+
+   ONE source of truth for how much room the floating bottom nav occupies:
+     island body (min-h-12 + 2x1.5 padding) + bottom gutter + safe area.
+   Every "keep clear of the nav" rule derives from this token, so the island's
+   height can change in one place without hunting for magic numbers.
+   -------------------------------------------------------------------------- */
+:root {
+  --nav-island-h: 3.75rem; /* 48px row + 12px vertical padding */
+  --nav-gutter: 0.625rem;
+  --nav-clearance: calc(
+    var(--nav-island-h) + var(--nav-gutter) + env(safe-area-inset-bottom, 0px)
+  );
+}
+
+/* Content must never end underneath the island. Applied at the page level so
+   the last card/button is always reachable (item 18). */
+@media (max-width: 1023px) {
+  .pb-nav {
+    padding-bottom: calc(var(--nav-clearance) + 0.75rem);
+  }
+
+  /* For pages with a sticky action bar (cart total, add-to-cart): clear the
+     island AND the bar above it. `--action-bar-h` is the bar's own height. */
+  .pb-nav-action {
+    padding-bottom: calc(var(--nav-clearance) + var(--action-bar-h, 4.25rem) + 0.75rem);
+  }
+}
+
+/* ==========================================================================
+   MOBILE-FIRST OPTIMIZATION
+   100% of customers order on phones. Minimum tap target 44px, minimum
+   readable body text 13px, and no wasted vertical space above the food.
+   ========================================================================== */
+
+/* Guarantees an accessible hit area without changing visual size. */
+.tap {
+  position: relative;
+}
+.tap::after {
+  content: "";
+  position: absolute;
+  inset: 50% 50% 50% 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(50%, -50%);
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  /* Larger base rhythm so Persian text stays legible on small screens */
+  .shell {
+    padding-inline: 0.875rem;
+  }
+
+  /* iOS zooms the page when an input's font-size is under 16px */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Horizontal snap rails feel native on touch */
+/* Horizontal control rails (category chips, sort chips).
+   NO scroll-snap: mandatory snapping fought the user on a short rail and could
+   park a chip half-off screen. Children never shrink, so text can never
+   collide — the rail simply scrolls when it runs out of room. */
+.snap-rail {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+}
+.snap-rail > * {
+  flex: 0 0 auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .snap-rail {
+    scroll-behavior: auto;
+  }
+}
+
+/* Sticky mobile action bars sit above the bottom navigation */
+/* Sticky action bars (add-to-cart, cart total) sit directly above the
+   floating island, spaced by the same token. */
+.above-nav {
+  bottom: calc(var(--nav-clearance) + 0.5rem);
+}
+
+/* ==========================================================================
+   BRAND LOGO VARIANT SWAPPING
+   Both official assets are in the DOM; CSS picks the right one per theme so
+   the correct mark paints on the first frame (no JS, no hydration flash).
+   ========================================================================== */
+.logo-on-dark {
+  opacity: 0;
+  visibility: hidden;
+}
+.logo-on-light {
+  opacity: 1;
+  visibility: visible;
+}
+[data-theme="dark"] .logo-on-dark {
+  opacity: 1;
+  visibility: visible;
+}
+[data-theme="dark"] .logo-on-light {
+  opacity: 0;
+  visibility: hidden;
+}
+/* ==========================================================================
+   ALWAYS-DARK ISLANDS
+   Some surfaces sit on food photography and must stay dark in
+   BOTH themes (otherwise the light palette would wash the image out). Scoping
+   the dark token values here converts every child utility automatically.
+   ========================================================================== */
+.on-photo {
+  --color-ink-950: #000000;
+  --color-ink-900: #0a0a0a;
+  --color-ink-850: #101012;
+  --color-ink-800: #141417;
+  --color-ink-700: #1b1b1f;
+  --color-ink-600: #232328;
+  --color-ink-500: #2e2e34;
+
+  --color-mist-100: #ffffff;
+  --color-mist-200: #d6d6d6;
+  --color-mist-300: #b8b8b8;
+  --color-mist-400: #999999;
+  --color-mist-500: #6b6b6b;
+
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-border-strong: rgba(255, 255, 255, 0.14);
+  --surface-card: #101012;
+  --surface-shadow: none;
+  --hairline: rgba(255, 255, 255, 0.07);
+  --white-a4: rgba(255, 255, 255, 0.04);
+  --white-a6: rgba(255, 255, 255, 0.06);
+  --white-a8: rgba(255, 255, 255, 0.08);
+  --white-a10: rgba(255, 255, 255, 0.10);
+}
+
+/* Breakpoint-scoped variant: the hero section only becomes an always-dark
+   island from `sm` up, where the copy sits ON the photograph. Below that the
+   copy is under the image and must follow the active theme. */
+@media (min-width: 640px) {
+  .sm\:on-photo {
+    --color-ink-950: #000000;
+    --color-ink-900: #0a0a0a;
+    --color-ink-850: #101012;
+    --color-ink-800: #141417;
+    --color-ink-700: #1b1b1f;
+    --color-ink-600: #232328;
+    --color-ink-500: #2e2e34;
+
+    --color-mist-100: #ffffff;
+    --color-mist-200: #d6d6d6;
+    --color-mist-300: #b8b8b8;
+    --color-mist-400: #999999;
+    --color-mist-500: #6b6b6b;
+
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --surface-border-strong: rgba(255, 255, 255, 0.14);
+    --surface-card: #101012;
+    --surface-shadow: none;
+    --hairline: rgba(255, 255, 255, 0.07);
+    --white-a4: rgba(255, 255, 255, 0.04);
+    --white-a6: rgba(255, 255, 255, 0.06);
+    --white-a8: rgba(255, 255, 255, 0.08);
+    --white-a10: rgba(255, 255, 255, 0.10);
+  }
+}
+
+/* Always-dark contexts (e.g. the hero photo overlay) force the light mark. */
+.on-photo .logo-on-dark,
+.force-dark .logo-on-dark {
+  opacity: 1;
+  visibility: visible;
+}
+.on-photo .logo-on-light,
+.force-dark .logo-on-light {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* ==========================================================================
+   DRAWER / OVERLAY MOTION
+   ========================================================================== */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.18s ease-out both;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+
+/* ==========================================================================
+   HORIZONTAL SCROLL BELT (item 4)
+   Free momentum scrolling — deliberately NO scroll-snap, so a flick glides
+   naturally instead of clicking into slots.
+   ========================================================================== */
+/* The layout rules are scoped BELOW the sm breakpoint so a `sm:grid` utility
+   on the same element can take over on tablet/desktop. Without this scope the
+   plain `.belt` class (declared after Tailwind's utilities) would win the
+   cascade and collapse the grid items. */
+@media (max-width: 639.98px) {
+  .belt {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: none;
+  }
+  .belt > * {
+    flex: 0 0 auto;
+  }
+}
+/* Scrollbar hiding is safe at every width. */
+.belt {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.belt::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+/* The belt previously used gradient edge-fades to hint at overflow. Gradients
+   are banned, so the affordance is now purely structural: a trailing spacer in
+   the markup plus the partially-visible next tile do the same job. */
+.belt-mask {
+  position: relative;
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+.animate-ping-slow {
+  animation: ping-slow 2.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ==========================================================================
+   HEARTBEAT — footer credit
+   Two quick beats then a rest, like a real pulse rather than a even throb.
+   ========================================================================== */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.18);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.14);
+  }
+  56% {
+    transform: scale(1);
+  }
+}
+.animate-heartbeat {
+  animation: heartbeat 1.8s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   TOUCH TARGET EXPANSION
+   Some controls are intentionally compact (40px) so the header and footer stay
+   dense. Rather than inflating the visible box — which would undo the density
+   work — we extend the *hit area* to the 44px accessibility minimum with a
+   centred pseudo-element. The control looks 40px; the finger gets 44px.
+   ========================================================================== */
+.tap-44 {
+  position: relative;
+}
+.tap-44::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  /* Sits behind the icon so it never intercepts hover styling. */
+  z-index: 0;
+}

@@ -1,0 +1,29 @@
+{
+  "brand": "Oxygen / اکسیژن",
+  "primaryColor": "#E0163D",
+  "actionColor": "#DA291C",
+  "accentColor": "#FFC72C",
+  "lightModeLogo": "oxygen-logo-dark.webp",
+  "darkModeLogo": "oxygen-logo-white.webp",
+  "source": "Official assets extracted from OxygenLogoPack.html",
+  "assets": [
+    "oxygen-icon-crimson.png",
+    "oxygen-icon-crimson.webp",
+    "oxygen-icon-dark.png",
+    "oxygen-icon-dark.webp",
+    "oxygen-icon-light.png",
+    "oxygen-icon-light.webp",
+    "oxygen-logo-crimson.png",
+    "oxygen-logo-crimson.webp",
+    "oxygen-logo-dark.png",
+    "oxygen-logo-dark.webp",
+    "oxygen-logo-gold.png",
+    "oxygen-logo-gold.webp",
+    "oxygen-logo-red.png",
+    "oxygen-logo-red.webp",
+    "oxygen-logo-white.png",
+    "oxygen-logo-white.webp",
+    "oxygen-social-crimson.png",
+    "oxygen-social-dark.png"
+  ]
+}

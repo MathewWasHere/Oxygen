@@ -1,0 +1,425 @@
+// OXYGEN — Stage 2 relational schema.
+// Normalized, explicit, and aligned 1:1 with src/lib/types.ts so the Stage 1
+// mock layer can be replaced by real queries without touching the UI.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ------------------------------- Identity --------------------------------
+
+enum Role {
+  CUSTOMER
+  STAFF
+  MANAGER
+  SUPER_ADMIN
+  DRIVER
+}
+
+model User {
+  id            String    @id @default(cuid())
+  phone         String    @unique
+  name          String?
+  role          Role      @default(CUSTOMER)
+  points        Int       @default(0)
+  isBlocked     Boolean   @default(false)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  favorites     Favorite[]
+  sessions      Session[]
+  notifications Notification[]
+  auditLogs     AuditLog[]
+
+  @@index([role])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  userAgent String?
+  ip        String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// OTP codes are stored hashed with attempt + expiry limits (never plaintext).
+model OtpCode {
+  id        String   @id @default(cuid())
+  phone     String
+  codeHash  String
+  attempts  Int      @default(0)
+  consumed  Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([phone, createdAt])
+}
+
+// -------------------------------- Catalog ---------------------------------
+
+model Category {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  name      String
+  image     String
+  sortOrder Int       @default(0)
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  products  Product[]
+
+  @@index([active, sortOrder])
+}
+
+model Product {
+  id               String   @id @default(cuid())
+  slug             String   @unique
+  categoryId       String
+  name             String
+  shortDescription String
+  description      String
+  ingredients      String[]
+  /// Price in Toman, integer — no floating point money.
+  price            Int
+  compareAtPrice   Int?
+  image            String
+  gallery          String[]
+  popular          Boolean  @default(false)
+  available        Boolean  @default(true)
+  prepMinutes      Int      @default(12)
+  rating           Float    @default(5)
+  soldCount        Int      @default(0)
+  badges           String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  category   Category          @relation(fields: [categoryId], references: [id])
+  modifiers  ProductModifier[]
+  orderItems OrderItem[]
+  favorites  Favorite[]
+
+  @@index([categoryId, available])
+  @@index([popular])
+}
+
+enum ModifierGroup {
+  EXTRA
+  SAUCE
+  SIZE
+}
+
+model ProductModifier {
+  id        String        @id @default(cuid())
+  productId String
+  name      String
+  price     Int
+  group     ModifierGroup @default(EXTRA)
+  isDefault Boolean       @default(false)
+  active    Boolean       @default(true)
+
+  product        Product             @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItemLinks OrderItemModifier[]
+
+  @@index([productId])
+}
+
+model Favorite {
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+}
+
+// -------------------------------- Delivery --------------------------------
+
+model DeliveryZone {
+  id         String   @id @default(cuid())
+  name       String
+  fee        Int
+  etaMinutes Int
+  minOrder   Int      @default(0)
+  active     Boolean  @default(true)
+  /// Optional GeoJSON polygon for precise deliverability checks.
+  polygon    Json?
+
+  addresses Address[]
+  orders    Order[]
+
+  @@index([active])
+}
+
+model Address {
+  id             String   @id @default(cuid())
+  userId         String
+  zoneId         String
+  title          String
+  province       String
+  city           String
+  line           String
+  plaque         String?
+  unit           String?
+  postalCode     String?
+  recipientName  String
+  recipientPhone String
+  note           String?
+  lat            Float?
+  lng            Float?
+  isDefault      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  zone   DeliveryZone @relation(fields: [zoneId], references: [id])
+  orders Order[]
+
+  @@index([userId])
+}
+
+// --------------------------------- Orders ---------------------------------
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  PAYMENT_FAILED
+}
+
+enum DeliveryMethod {
+  DELIVERY
+  PICKUP
+}
+
+model Order {
+  id             String         @id @default(cuid())
+  number         Int            @unique @default(autoincrement())
+  userId         String
+  addressId      String?
+  zoneId         String?
+  status         OrderStatus    @default(PENDING)
+  deliveryMethod DeliveryMethod @default(DELIVERY)
+
+  /// All monetary fields are recomputed server-side; client values are never trusted.
+  subtotal    Int
+  deliveryFee Int
+  discount    Int    @default(0)
+  total       Int
+  couponCode  String?
+
+  etaMinutes    Int
+  customerName  String
+  customerPhone String
+  internalNote  String?
+  pointsEarned  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user     User         @relation(fields: [userId], references: [id])
+  address  Address?     @relation(fields: [addressId], references: [id])
+  zone     DeliveryZone? @relation(fields: [zoneId], references: [id])
+  items    OrderItem[]
+  events   OrderEvent[]
+  payment  Payment?
+  delivery Delivery?
+
+  @@index([status, createdAt])
+  @@index([userId, createdAt])
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  /// Denormalized snapshot: the menu can change without rewriting history.
+  name      String
+  image     String
+  unitPrice Int
+  quantity  Int
+  lineTotal Int
+  note      String?
+
+  order     Order               @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product             @relation(fields: [productId], references: [id])
+  modifiers OrderItemModifier[]
+
+  @@index([orderId])
+}
+
+model OrderItemModifier {
+  id          String @id @default(cuid())
+  orderItemId String
+  modifierId  String
+  name        String
+  price       Int
+
+  orderItem OrderItem       @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
+  modifier  ProductModifier @relation(fields: [modifierId], references: [id])
+
+  @@index([orderItemId])
+}
+
+model OrderEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  status    OrderStatus
+  note      String?
+  actorId   String?
+  createdAt DateTime    @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId, createdAt])
+}
+
+// -------------------------------- Payments --------------------------------
+
+enum PaymentMethod {
+  ONLINE
+  CASH
+  POS
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  orderId     String        @unique
+  method      PaymentMethod
+  status      PaymentStatus @default(PENDING)
+  amount      Int
+  /// Gateway authority/token, and the verified reference id.
+  authority   String?
+  refId       String?
+  gateway     String        @default("zarinpal")
+  rawResponse Json?
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+// -------------------------------- Drivers ---------------------------------
+
+model Driver {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String   @unique
+  active    Boolean  @default(true)
+  vehicle   String?
+  createdAt DateTime @default(now())
+
+  deliveries Delivery[]
+}
+
+enum DeliveryStatus {
+  ASSIGNED
+  PICKED_UP
+  DELIVERED
+  FAILED
+}
+
+model Delivery {
+  id          String         @id @default(cuid())
+  orderId     String         @unique
+  driverId    String?
+  status      DeliveryStatus @default(ASSIGNED)
+  assignedAt  DateTime       @default(now())
+  pickedUpAt  DateTime?
+  deliveredAt DateTime?
+
+  order  Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  driver Driver? @relation(fields: [driverId], references: [id])
+}
+
+// ------------------------- Promotions & messaging -------------------------
+
+enum CouponType {
+  PERCENT
+  FIXED
+}
+
+model Coupon {
+  code           String     @id
+  type           CouponType
+  value          Int
+  maxDiscount    Int?
+  minOrder       Int        @default(0)
+  firstOrderOnly Boolean    @default(false)
+  usageLimit     Int?
+  usedCount      Int        @default(0)
+  startsAt       DateTime?
+  endsAt         DateTime?
+  description    String
+  active         Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+
+  @@index([active])
+}
+
+enum NotificationChannel {
+  SMS
+  PUSH
+  IN_APP
+}
+
+model Notification {
+  id        String              @id @default(cuid())
+  userId    String
+  channel   NotificationChannel
+  event     String
+  title     String
+  body      String
+  payload   Json?
+  sentAt    DateTime?
+  readAt    DateTime?
+  createdAt DateTime            @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+/// Audit trail for sensitive admin actions (price change, refund, cancel...).
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  before     Json?
+  after      Json?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id])
+
+  @@index([entityType, entityId])
+}
