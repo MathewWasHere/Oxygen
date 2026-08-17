@@ -65,7 +65,7 @@ function OrderDetailInner() {
       </Link>
 
       {celebrate && (
-        <div className="mb-5 animate-fade-up rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
+        <div className="mb-5 max-w-full animate-fade-up overflow-hidden rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-center sm:p-6">
           <div className="mx-auto grid size-14 place-items-center rounded-full bg-emerald-500/15 text-emerald-600">
             <Icon name="check" className="size-7" />
           </div>
@@ -81,20 +81,20 @@ function OrderDetailInner() {
         </div>
       )}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-4">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-4">
           {/* Status header */}
           <div className="surface overflow-hidden rounded-2xl">
-            <div className="border-b border-[var(--surface-border)] bg-flame-600/8 p-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
+            <div className="border-b border-[var(--surface-border)] bg-flame-600/8 p-4 sm:p-6">
+              <div className="flex min-w-0 flex-wrap items-start justify-between gap-3 sm:gap-4">
+                <div className="min-w-0">
                   <div className="num text-[13px] text-mist-400">شماره سفارش</div>
                   <div className="num text-2xl font-extrabold text-mist-100">#{toFa(order.number)}</div>
                   <div className="num mt-1 text-[13px] text-mist-500">
                     {faDate(order.createdAt)} — {faTime(order.createdAt)}
                   </div>
                 </div>
-                <span className={cn("rounded-full border px-3 py-1.5 text-[13px] font-bold", STATUS_TONE[order.status])}>
+                <span className={cn("shrink-0 rounded-full border px-3 py-1.5 text-[13px] font-bold", STATUS_TONE[order.status])}>
                   {STATUS_SHORT[order.status]}
                 </span>
               </div>
@@ -118,7 +118,7 @@ function OrderDetailInner() {
               )}
             </div>
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               <OrderTimeline order={order} />
             </div>
 
@@ -146,8 +146,8 @@ function OrderDetailInner() {
             <h2 className="text-[15px] font-extrabold text-mist-100">اقلام سفارش</h2>
             <div className="mt-4 space-y-3">
               {order.items.map((i, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <FoodImage src={i.image} alt={i.name} className="size-14 shrink-0 rounded-xl" sizes="56px" />
+                <div key={idx} className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                  <FoodImage src={i.image} alt={i.name} className="size-12 shrink-0 rounded-xl sm:size-14" sizes="(max-width:640px) 48px, 56px" />
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-[13px] font-bold text-mist-100">{i.name}</div>
                     {i.modifiers.length > 0 && (
@@ -167,8 +167,8 @@ function OrderDetailInner() {
         </div>
 
         {/* Sidebar */}
-        <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
-          <div className="surface rounded-2xl p-4 sm:p-5">
+        <aside className="min-w-0 space-y-4 lg:sticky lg:top-28 lg:self-start">
+          <div className="surface min-w-0 max-w-full rounded-2xl p-4 sm:p-5">
             <h2 className="text-[15px] font-extrabold text-mist-100">صورتحساب</h2>
             <div className="mt-4 space-y-3 border-b border-[var(--surface-border)] pb-4 text-[13px]">
               <Row label="جمع سفارش" value={`${faNumber(order.subtotal)} تومان`} />
@@ -200,7 +200,7 @@ function OrderDetailInner() {
           </div>
 
           {order.address && (
-            <div className="surface rounded-2xl p-4 sm:p-5">
+            <div className="surface min-w-0 max-w-full rounded-2xl p-4 sm:p-5">
               <h2 className="flex items-center gap-2 text-[15px] font-extrabold text-mist-100">
                 <Icon name="pin" className="size-4 text-flame-500" />
                 آدرس تحویل
@@ -219,9 +219,9 @@ function OrderDetailInner() {
 
           <a
             href={`tel:${RESTAURANT.phone}`}
-            className="surface flex items-center justify-between rounded-2xl p-5 transition-colors hover:border-flame-600/40"
+            className="surface flex min-w-0 max-w-full items-center justify-between gap-3 rounded-2xl p-4 transition-colors hover:border-flame-600/40 sm:p-5"
           >
-            <span>
+            <span className="min-w-0">
               <span className="block text-[13px] font-extrabold text-mist-100">مشکلی در سفارش هست؟</span>
               <span className="block text-[13px] text-mist-400">مستقیم با اکسیژن تماس بگیر</span>
             </span>
@@ -235,9 +235,9 @@ function OrderDetailInner() {
 
 function Row({ label, value, flame }: { label: string; value: string; flame?: boolean }) {
   return (
-    <div className="flex justify-between">
-      <span className="text-mist-400">{label}</span>
-      <span className={cn("num font-bold", flame ? "text-flame-600" : "text-mist-100")}>{value}</span>
+    <div className="flex min-w-0 justify-between gap-3">
+      <span className="min-w-0 truncate text-mist-400">{label}</span>
+      <span className={cn("num max-w-[68%] shrink-0 break-words text-left font-bold", flame ? "text-flame-600" : "text-mist-100")}>{value}</span>
     </div>
   );
 }

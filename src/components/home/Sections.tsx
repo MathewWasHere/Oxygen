@@ -24,8 +24,8 @@ export function CategoryStrip() {
       />
       {/* Phones: a free-scrolling belt — no snapping, hidden scrollbar, never
           wraps. Tablet and up: a normal grid. */}
-      <div className="belt-mask -mx-3.5 sm:mx-0">
-        <div className="belt gap-2.5 px-3.5 pb-1 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-5">
+      <div className="belt-mask -mx-3 sm:mx-0">
+        <div className="belt gap-2.5 px-3 pb-1 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-5">
           {categories.map((c) => (
             <Link
               key={c.id}

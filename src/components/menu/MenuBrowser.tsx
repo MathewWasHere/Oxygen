@@ -92,7 +92,7 @@ function MenuInner() {
                 aria-label="جستجو در منو"
               />
             </div>
-            <div className="snap-rail -mx-3.5 flex gap-2 overflow-x-auto px-3.5 no-scrollbar sm:mx-0 sm:px-0">
+            <div className="snap-rail -mx-3 flex gap-2 overflow-x-auto px-3 no-scrollbar sm:mx-0 sm:px-0">
               {SORTS.map((s) => (
                 <button
                   key={s.key}

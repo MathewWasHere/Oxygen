@@ -67,7 +67,7 @@ export default function AccountPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[240px_1fr]">
         {/* Tabs */}
-        <nav className="snap-rail -mx-3.5 flex gap-2 overflow-x-auto px-3.5 no-scrollbar lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0">
+        <nav className="snap-rail -mx-3 flex gap-2 overflow-x-auto px-3 no-scrollbar lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0">
           {TABS.map((t) => (
             <button
               key={t.key}
