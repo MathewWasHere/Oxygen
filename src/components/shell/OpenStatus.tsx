@@ -46,7 +46,7 @@ export function OpenStatus({ className }: { className?: string }) {
           open ? "animate-pulse-dot bg-emerald-500 text-emerald-500/45" : "bg-mist-500",
         )}
       />
-      <span>{open ? "باز است" : "بسته است"}</span>
+      <span suppressHydrationWarning>{open ? "باز است" : "بسته است"}</span>
       {/* Hours only appear where the header has room to breathe. */}
       <span className="num hidden text-mist-400 lg:inline" dir="ltr">
         {toFa("۱۱:۰۰–۰۱:۰۰")}

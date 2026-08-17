@@ -28,13 +28,13 @@ export function Logo({
       )}
       <span className="relative block" style={{ width, height }}>
         <Image
-          src="/brand/oxygen-logo-dark.webp"
+          src="/brand/oxygen-logo-crimson.webp"
           alt="اکسیژن"
           width={width}
           height={height}
           priority={priority}
           className="logo-on-light absolute inset-0"
-          style={{ width, height: "auto" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
         />
         <Image
           src="/brand/oxygen-logo-white.webp"
@@ -44,7 +44,7 @@ export function Logo({
           height={height}
           loading="lazy"
           className="logo-on-dark absolute inset-0"
-          style={{ width, height: "auto" }}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
         />
       </span>
     </span>
