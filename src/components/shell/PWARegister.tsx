@@ -18,7 +18,11 @@ export function PWARegister() {
     // Defer past the load event AND past the browser's idle point, so SW
     // installation never competes for bandwidth with the first paint.
     const register = () => {
-      const go = () => navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+      const go = () =>
+        navigator.serviceWorker
+          .register("/sw.js", { scope: "/", updateViaCache: "none" })
+          .then((registration) => registration.update())
+          .catch(() => undefined);
       if ("requestIdleCallback" in window) {
         (window as Window & {
           requestIdleCallback: (cb: () => void, o?: { timeout: number }) => number;

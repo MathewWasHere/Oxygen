@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "فست فود اکسیژن",
+  "name": "فست فود اکسیژن | OXYGEN",
   "short_name": "اکسیژن",
-  "description": "سفارش آنلاین مستقیم از فست فود اکسیژن در فسا — برگر، پیتزا، ساندویچ و سوخاری تازه.",
+  "description": "اپ رسمی سفارش آنلاین فست فود اکسیژن در فسا — هر لقمه، یک نفس تازه.",
   "lang": "fa",
   "dir": "rtl",
   "start_url": "/?source=pwa",
@@ -23,25 +23,25 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/icons/icon-192.png",
+      "src": "/icons/oxygen-pwa-192-v4.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.png",
+      "src": "/icons/oxygen-pwa-512-v4.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icons/icon-maskable-192.png",
+      "src": "/icons/oxygen-maskable-192-v4.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/icons/icon-maskable-512.png",
+      "src": "/icons/oxygen-maskable-512-v4.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -54,8 +54,9 @@
       "url": "/menu",
       "icons": [
         {
-          "src": "/icons/icon-192.png",
-          "sizes": "192x192"
+          "src": "/icons/oxygen-pwa-192-v4.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -65,8 +66,9 @@
       "url": "/cart",
       "icons": [
         {
-          "src": "/icons/icon-192.png",
-          "sizes": "192x192"
+          "src": "/icons/oxygen-pwa-192-v4.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     },
@@ -76,8 +78,9 @@
       "url": "/orders",
       "icons": [
         {
-          "src": "/icons/icon-192.png",
-          "sizes": "192x192"
+          "src": "/icons/oxygen-pwa-192-v4.png",
+          "sizes": "192x192",
+          "type": "image/png"
         }
       ]
     }

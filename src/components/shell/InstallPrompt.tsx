@@ -9,7 +9,7 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 }
 
-const DISMISS_KEY = "oxygen.install.dismissed";
+const DISMISS_KEY = "oxygen.install.dismissed.v4";
 
 /**
  * "Add to home screen" banner.
@@ -94,18 +94,18 @@ export function InstallPrompt() {
       <div className="flex items-start gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/icons/icon-192.png"
-          alt=""
+          src="/icons/oxygen-pwa-192-v4.png"
+          alt="لوگوی اپ فست فود اکسیژن"
           width={48}
           height={48}
-          className="size-12 shrink-0 rounded-2xl border border-[var(--surface-border)]"
+          className="size-12 shrink-0 rounded-2xl border border-flame-600/30 bg-flame-600"
         />
         <div className="min-w-0 flex-1">
-          <h3 className="text-[14px] font-extrabold text-mist-100">اپ اکسیژن را نصب کن</h3>
+          <h3 className="text-[14px] font-extrabold text-mist-100">نصب فست فود اکسیژن</h3>
           <p className="mt-1 text-[13px] leading-6 text-mist-400">
             {iosHint
               ? "دکمه اشتراک‌گذاری مرورگر را بزن و «Add to Home Screen» را انتخاب کن."
-              : "سریع‌تر سفارش بده، بدون باز کردن مرورگر — درست مثل یک اپلیکیشن."}
+              : "هر لقمه، یک نفس تازه — منوی اکسیژن همیشه روی صفحه اصلی گوشی تو."}
           </p>
         </div>
         <button
@@ -123,7 +123,7 @@ export function InstallPrompt() {
           className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-flame-600 text-[13px] font-extrabold text-white transition-all hover:brightness-110 active:scale-[0.98]"
         >
           <Icon name="plus" className="size-4" />
-          افزودن به صفحه اصلی
+          نصب اپ اکسیژن
         </button>
       )}
     </div>
