@@ -125,8 +125,8 @@ export default function CheckoutPage() {
         })}
       </ol>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-4">
+      <div className="mt-6 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="min-w-0 space-y-4">
           {/* STEP 1 — auth */}
           {step === 1 && (
             <div className="animate-fade-up">
@@ -178,8 +178,8 @@ export default function CheckoutPage() {
                         )}
                       >
                         <button onClick={() => selectAddress(a.id)} className="w-full text-right">
-                          <div className="flex items-center justify-between">
-                            <span className="flex items-center gap-2">
+                          <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+                            <span className="flex min-w-0 items-center gap-2">
                               <span
                                 className={cn(
                                   "grid size-5 place-items-center rounded-full border text-[12px] leading-none tabular-nums",
@@ -190,7 +190,7 @@ export default function CheckoutPage() {
                               </span>
                               <span className="text-[14px] font-extrabold text-mist-100">{a.title}</span>
                             </span>
-                            <span className="num text-[13px] text-mist-400">
+                            <span className="num max-w-full break-words text-left text-[13px] text-mist-400">
                               {z?.name} — ارسال {faNumber(z?.fee ?? 0)} تومان
                             </span>
                           </div>
@@ -375,8 +375,8 @@ export default function CheckoutPage() {
         </div>
 
         {/* Summary rail */}
-        <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="surface rounded-2xl p-4 sm:p-5">
+        <aside className="min-w-0 lg:sticky lg:top-28 lg:self-start">
+          <div className="surface min-w-0 max-w-full rounded-2xl p-4 sm:p-5">
             <h2 className="text-[15px] font-extrabold text-mist-100">صورتحساب</h2>
             <div className="mt-4 space-y-3 border-b border-[var(--surface-border)] pb-4 text-[13px]">
               <div className="flex justify-between">

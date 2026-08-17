@@ -176,7 +176,7 @@ export function TrackingPreview() {
                 {i < TRACK_STEPS.length - 1 && (
                   <span
                     aria-hidden="true"
-                    className={`absolute right-[13px] top-8 h-[calc(100%-2rem)] w-0.5 rounded-full ${
+                    className={`absolute right-[11px] top-7 h-[calc(100%-1.75rem)] w-0.5 rounded-full ${
                       st.state === "done" ? "bg-emerald-500/45" : "bg-[var(--white-a10)]"
                     }`}
                   />

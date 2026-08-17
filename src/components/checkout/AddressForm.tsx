@@ -118,7 +118,7 @@ export function AddressForm({
           />
         </Field>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-2.5 sm:gap-3">
           <Field label="پلاک">
             <Input value={plaque} onChange={(e) => setPlaque(e.target.value)} placeholder="۱۲" inputMode="numeric" />
           </Field>

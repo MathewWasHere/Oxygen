@@ -261,15 +261,16 @@ export function ProductDetail({ product, related }: { product: Product; related:
       )}
 
       {/* Mobile sticky bar */}
-      <div className="above-nav fixed inset-x-0 z-45 border-t border-[var(--surface-border)] bg-ink-950/97 p-3 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center gap-3">
-          <QuantitySelector value={qty} onChange={(v) => setQty(Math.max(1, v))} size="sm" />
+      <div className="above-nav fixed inset-x-0 z-45 box-border w-full max-w-[100vw] overflow-hidden border-t border-[var(--surface-border)] bg-ink-950/97 p-2.5 backdrop-blur-xl lg:hidden">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="shrink-0">
+            <QuantitySelector value={qty} onChange={(v) => setQty(Math.max(1, v))} size="sm" />
+          </span>
           <Button
-            block
             size="lg"
             disabled={!product.available || product.price <= 0}
             onClick={() => addItem(product, qty, modifiers, note.trim() || undefined)}
-            className="flex-1"
+            className="flex-1 overflow-hidden whitespace-nowrap px-2"
           >
             {product.price > 0 ? (
               <>افزودن — <span className="num">{faNumber(total)}</span> تومان</>

@@ -92,7 +92,7 @@ export function Field({
   required?: boolean;
 }) {
   return (
-    <label className="block">
+    <label className="block min-w-0">
       <span className="mb-2 flex items-center gap-1.5 text-[13px] font-medium text-mist-200">
         {label}
         {required && <span className="text-flame-500">*</span>}
@@ -115,7 +115,7 @@ export function Input({
   return (
     <input
       className={cn(
-        "h-12 w-full rounded-2xl border bg-ink-850 px-4 text-[15px] text-mist-100 placeholder:text-mist-500",
+        "h-12 min-w-0 max-w-full w-full rounded-2xl border bg-ink-850 px-4 text-[15px] text-mist-100 placeholder:text-mist-500",
         "transition-colors focus:border-flame-600/70 focus:bg-ink-800 outline-none",
         invalid ? "border-red-500/50" : "border-[var(--surface-border)]",
         className,
@@ -132,7 +132,7 @@ export function Textarea({
   return (
     <textarea
       className={cn(
-        "min-h-24 w-full resize-none rounded-2xl border border-[var(--surface-border)] bg-ink-850 p-4 text-[15px] text-mist-100",
+        "min-h-24 min-w-0 max-w-full w-full resize-none rounded-2xl border border-[var(--surface-border)] bg-ink-850 p-4 text-[15px] text-mist-100",
         "placeholder:text-mist-500 transition-colors focus:border-flame-600/70 focus:bg-ink-800 outline-none",
         className,
       )}

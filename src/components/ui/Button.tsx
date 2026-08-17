@@ -38,7 +38,7 @@ interface BaseProps {
  * overflowed the viewport). The label itself truncates instead.
  */
 const base =
-  "inline-flex min-w-0 items-center justify-center font-medium transition-all duration-200 active:scale-[0.97] disabled:opacity-45 disabled:pointer-events-none select-none";
+  "inline-flex min-w-0 max-w-full items-center justify-center overflow-hidden font-medium transition-all duration-200 active:scale-[0.97] disabled:opacity-45 disabled:pointer-events-none select-none";
 
 export const Button = forwardRef<
   HTMLButtonElement,

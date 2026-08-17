@@ -66,11 +66,11 @@ export function StepCircle({
   return (
     <span
       className={cn(
-        "relative z-10 grid size-7 shrink-0 place-items-center rounded-full transition-all",
+        "relative z-10 grid size-6 shrink-0 place-items-center rounded-full transition-all",
         state === "done" && "bg-emerald-500 text-white ring-1 ring-emerald-500/40",
         // `live-ring` paints on ::after, so the circle's box and its
         // grid-centred glyph are untouched — the pulse cannot shift the icon.
-        state === "active" && "live-ring bg-flame-600 text-white ring-2 ring-flame-500/20",
+        state === "active" && "live-ring bg-flame-600 text-white ring-1 ring-flame-500/25",
         state === "todo" && "border border-[var(--surface-border-strong)] bg-ink-850 text-mist-500",
         className,
       )}
@@ -131,14 +131,14 @@ export function OrderTimeline({ order }: { order: Order }) {
 
         return (
           <li key={status} className="relative flex gap-3.5 pb-6 last:pb-0">
-            {/* Connector starts below the compact 28px circle and stays
-                centred on its 14px axis. */}
+            {/* Connector starts below the compact 24px circle and stays
+                centred on its 12px axis. */}
             {!last && (
               <span
                 aria-hidden="true"
                 className={cn(
-                  "absolute top-8 h-[calc(100%-2rem)] w-0.5 rounded-full",
-                  "right-[13px]",
+                  "absolute top-7 h-[calc(100%-1.75rem)] w-0.5 rounded-full",
+                  "right-[11px]",
                   done ? "bg-emerald-500/45" : "bg-[var(--white-a10)]",
                 )}
               />

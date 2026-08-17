@@ -80,7 +80,7 @@ export function LiveOrderBanner() {
           <div className="flex items-center gap-2">
             <span
               className={cn(
-                "relative grid size-7 shrink-0 place-items-center rounded-full sm:size-8",
+                "relative grid size-6 shrink-0 place-items-center rounded-full sm:size-7",
                 outForDelivery || ready
                   ? "bg-emerald-500/15 text-emerald-500"
                   : "bg-flame-600/15 text-flame-600",
@@ -88,7 +88,7 @@ export function LiveOrderBanner() {
             >
               <Icon
                 name={outForDelivery ? "bike" : ready ? "check" : "clock"}
-                className="size-3.5"
+                className="size-3"
               />
             </span>
 

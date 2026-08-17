@@ -226,13 +226,13 @@ function MenuInner() {
       {cartCount > 0 && (
         <Link
           href="/cart"
-          className="above-nav fixed inset-x-3 z-45 mb-2 flex animate-fade-up items-center justify-between gap-3 rounded-2xl bg-flame-600 px-5 py-4 text-white shadow-[0_12px_34px_-14px_rgba(0,0,0,0.45)] lg:hidden"
+          className="above-nav fixed inset-x-3 z-45 mb-2 flex min-w-0 max-w-[calc(100vw-1.5rem)] animate-fade-up items-center justify-between gap-2 overflow-hidden rounded-2xl bg-flame-600 px-3.5 py-3 text-white shadow-[0_12px_34px_-14px_rgba(0,0,0,0.45)] lg:hidden"
         >
-          <span className="flex items-center gap-2 text-[13px] font-extrabold">
-            <span className="num grid size-6 place-items-center rounded-full bg-black/20">{toFa(cartCount)}</span>
-            مشاهده سبد خرید
+          <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-extrabold">
+            <span className="num grid size-5 shrink-0 place-items-center rounded-full bg-black/20">{toFa(cartCount)}</span>
+            <span className="truncate">مشاهده سبد خرید</span>
           </span>
-          <span className="num text-[14px] font-extrabold">{faNumber(totals.subtotal)} تومان</span>
+          <span className="num shrink-0 text-[13px] font-extrabold">{faNumber(totals.subtotal)} تومان</span>
         </Link>
       )}
     </div>

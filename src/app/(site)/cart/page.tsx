@@ -58,12 +58,12 @@ export default function CartPage() {
         </Link>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
         {/* Items */}
-        <div className="space-y-3">
+        <div className="min-w-0 space-y-3">
           {state.cart.map((item) => (
-            <article key={item.key} className="surface flex gap-4 rounded-2xl p-3.5">
-              <FoodImage src={item.image} alt={item.name} className="size-24 shrink-0 rounded-2xl" sizes="96px" />
+            <article key={item.key} className="surface flex min-w-0 gap-3 rounded-2xl p-3 sm:gap-4 sm:p-3.5">
+              <FoodImage src={item.image} alt={item.name} className="size-20 shrink-0 rounded-xl sm:size-24 sm:rounded-2xl" sizes="(max-width:640px) 80px, 96px" />
               <div className="flex min-w-0 flex-1 flex-col">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0">
@@ -103,8 +103,8 @@ export default function CartPage() {
         </div>
 
         {/* Summary */}
-        <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="surface rounded-2xl p-5">
+        <aside className="min-w-0 lg:sticky lg:top-28 lg:self-start">
+          <div className="surface min-w-0 max-w-full rounded-2xl p-4 sm:p-5">
             <h2 className="text-[15px] font-extrabold text-mist-100">خلاصه سفارش</h2>
 
             <div className="mt-4 space-y-3 border-b border-[var(--surface-border)] pb-4 text-[13.5px]">
@@ -177,10 +177,10 @@ export default function CartPage() {
       </div>
 
       {/* Mobile sticky checkout */}
-      <div className="above-nav fixed inset-x-0 z-45 border-t border-[var(--surface-border)] bg-ink-950/97 p-3 pb-3 backdrop-blur-xl lg:hidden">
-        <div className="mb-2 flex items-center justify-between px-1">
+      <div className="above-nav fixed inset-x-0 z-45 box-border w-full max-w-[100vw] overflow-hidden border-t border-[var(--surface-border)] bg-ink-950/97 p-2.5 backdrop-blur-xl lg:hidden">
+        <div className="mb-2 flex min-w-0 items-center justify-between gap-2 px-1">
           <span className="text-[13px] text-mist-400">مبلغ قابل پرداخت</span>
-          <span className="num text-[16px] font-extrabold text-mist-100">{faNumber(totals.total)} تومان</span>
+          <span className="num min-w-0 text-left text-[16px] font-extrabold text-mist-100">{faNumber(totals.total)} تومان</span>
         </div>
         <ButtonLink href="/checkout" size="lg" block>
           ادامه ثبت سفارش
@@ -206,7 +206,7 @@ function Row({
       <span className="min-w-0 truncate text-mist-400">{label}</span>
       <span
         className={cn(
-          "num font-bold",
+          "num max-w-[68%] break-words text-left font-bold",
           tone === "flame" ? "text-flame-600" : muted ? "text-[13px] font-medium text-mist-500" : "text-mist-100",
         )}
       >
