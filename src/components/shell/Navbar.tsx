@@ -14,6 +14,7 @@ import { Icon, type IconName } from "@/components/ui/Icon";
 import { CountBadge } from "@/components/ui";
 import { ThemeToggle, ThemeSwitch } from "@/components/theme/ThemeToggle";
 import { OpenStatus, useIsOpen } from "@/components/shell/OpenStatus";
+import { INSTALL_REQUEST_EVENT } from "@/components/shell/InstallPrompt";
 
 const LINKS = [
   { href: "/", label: "خانه" },
@@ -240,6 +241,20 @@ export function Navbar() {
                   <Icon name="user" className="size-[18px] shrink-0" />
                   {state.user ? "حساب کاربری" : "ورود / ثبت‌نام"}
                 </Link>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    window.setTimeout(
+                      () => window.dispatchEvent(new Event(INSTALL_REQUEST_EVENT)),
+                      0,
+                    );
+                  }}
+                  className="flex min-h-12 w-full items-center gap-3 rounded-xl border border-flame-600/30 bg-flame-600/8 px-3.5 text-right text-[15px] font-bold text-flame-500 transition-colors hover:bg-flame-600/12"
+                >
+                  <Icon name="download" className="size-[18px] shrink-0" />
+                  نصب برنامه اکسیژن
+                </button>
               </div>
 
               {/* Category shortcuts — the drawer should be a real way INTO the

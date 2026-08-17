@@ -30,6 +30,7 @@ export type IconName =
   | "edit"
   | "trash"
   | "instagram"
+  | "download"
   | "flame";
 
 const PATHS: Record<IconName, React.ReactNode> = {
@@ -157,6 +158,12 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <circle cx="12" cy="12" r="3.9" />
       {/* Flash dot: filled so it holds its weight at 16px. */}
       <circle cx="16.9" cy="7.1" r="1.05" fill="currentColor" stroke="none" />
+    </>
+  ),
+  download: (
+    <>
+      <path d="M12 3.5v11M7.5 10.5 12 15l4.5-4.5" />
+      <path d="M5 18.5h14" />
     </>
   ),
   flame: (

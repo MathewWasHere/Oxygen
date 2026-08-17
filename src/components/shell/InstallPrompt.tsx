@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { cn } from "@/lib/cn";
 
@@ -10,6 +10,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const DISMISS_KEY = "oxygen.install.dismissed.v4";
+export const INSTALL_REQUEST_EVENT = "oxygen:install-request";
 
 /**
  * "Add to home screen" banner.
@@ -21,7 +22,9 @@ const DISMISS_KEY = "oxygen.install.dismissed.v4";
  */
 export function InstallPrompt() {
   const [deferred, setDeferred] = useState<BeforeInstallPromptEvent | null>(null);
+  const deferredRef = useRef<BeforeInstallPromptEvent | null>(null);
   const [iosHint, setIosHint] = useState(false);
+  const [manualHint, setManualHint] = useState(false);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -31,33 +34,55 @@ export function InstallPrompt() {
       window.matchMedia("(display-mode: standalone)").matches ||
       (window.navigator as unknown as { standalone?: boolean }).standalone === true;
     if (standalone) return; // already installed
-    if (localStorage.getItem(DISMISS_KEY) === "1") return;
 
-    const onPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferred(e as BeforeInstallPromptEvent);
-      setVisible(true);
-    };
-    window.addEventListener("beforeinstallprompt", onPrompt);
+    let dismissed = false;
+    try {
+      dismissed = localStorage.getItem(DISMISS_KEY) === "1";
+    } catch {
+      /* private mode */
+    }
 
     const ua = window.navigator.userAgent;
     const isIOS = /iPad|iPhone|iPod/.test(ua);
     const isSafari = /Safari/.test(ua) && !/CriOS|FxiOS|Chrome/.test(ua);
-    if (isIOS && isSafari) {
-      const t = setTimeout(() => {
-        setIosHint(true);
-        setVisible(true);
-      }, 2500);
-      return () => {
-        clearTimeout(t);
-        window.removeEventListener("beforeinstallprompt", onPrompt);
-      };
-    }
+    const isIOSSafari = isIOS && isSafari;
+
+    const onPrompt = (e: Event) => {
+      e.preventDefault();
+      const promptEvent = e as BeforeInstallPromptEvent;
+      deferredRef.current = promptEvent;
+      setDeferred(promptEvent);
+      setIosHint(false);
+      setManualHint(false);
+      if (!dismissed) setVisible(true);
+    };
+
+    // The explicit button in the hamburger drawer always works, even when the
+    // automatic banner was dismissed earlier. If the browser has not exposed
+    // a native install prompt, show the correct manual instruction instead.
+    const onInstallRequest = () => {
+      setIosHint(isIOSSafari);
+      setManualHint(!isIOSSafari && !deferredRef.current);
+      setVisible(true);
+    };
 
     const onInstalled = () => setVisible(false);
+    window.addEventListener("beforeinstallprompt", onPrompt);
+    window.addEventListener(INSTALL_REQUEST_EVENT, onInstallRequest);
     window.addEventListener("appinstalled", onInstalled);
+
+    const iosTimer =
+      isIOSSafari && !dismissed
+        ? window.setTimeout(() => {
+            setIosHint(true);
+            setVisible(true);
+          }, 2500)
+        : undefined;
+
     return () => {
+      if (iosTimer !== undefined) window.clearTimeout(iosTimer);
       window.removeEventListener("beforeinstallprompt", onPrompt);
+      window.removeEventListener(INSTALL_REQUEST_EVENT, onInstallRequest);
       window.removeEventListener("appinstalled", onInstalled);
     };
   }, []);
@@ -75,7 +100,9 @@ export function InstallPrompt() {
     if (!deferred) return;
     await deferred.prompt();
     await deferred.userChoice;
+    deferredRef.current = null;
     setDeferred(null);
+    setManualHint(false);
     setVisible(false);
   };
 
@@ -105,7 +132,9 @@ export function InstallPrompt() {
           <p className="mt-1 text-[13px] leading-6 text-mist-400">
             {iosHint
               ? "دکمه اشتراک‌گذاری مرورگر را بزن و «Add to Home Screen» را انتخاب کن."
-              : "هر لقمه، یک نفس تازه — منوی اکسیژن همیشه روی صفحه اصلی گوشی تو."}
+              : manualHint
+                ? "از منوی مرورگر گزینه «نصب برنامه» یا «افزودن به صفحه اصلی» را انتخاب کن."
+                : "هر لقمه، یک نفس تازه — منوی اکسیژن همیشه روی صفحه اصلی گوشی تو."}
           </p>
         </div>
         <button
@@ -117,7 +146,7 @@ export function InstallPrompt() {
         </button>
       </div>
 
-      {!iosHint && (
+      {!iosHint && !manualHint && deferred && (
         <button
           onClick={install}
           className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-2xl bg-flame-600 text-[13px] font-extrabold text-white transition-all hover:brightness-110 active:scale-[0.98]"
