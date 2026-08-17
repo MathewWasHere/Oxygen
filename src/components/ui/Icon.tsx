@@ -100,9 +100,11 @@ const PATHS: Record<IconName, React.ReactNode> = {
   ),
   bike: (
     <>
-      <circle cx="6" cy="17" r="3" />
-      <circle cx="18" cy="17" r="3" />
-      <path d="M9 17h5l-2-7 3-3M11 6h3" />
+      {/* Delivery motorcycle: cargo box, chassis, handlebar and two wheels. */}
+      <circle cx="6" cy="17.5" r="2.5" />
+      <circle cx="18" cy="17.5" r="2.5" />
+      <rect x="3.5" y="7.5" width="6.5" height="5" rx="1" />
+      <path d="M6.7 12.5v2.5M8.5 17.5h5.2l2.3-5.2h-5.5l-2 5.2ZM10 11h4.5M16 12.3l-1.2-4.1h2.8M17.6 8.2h2" />
     </>
   ),
   gift: (
