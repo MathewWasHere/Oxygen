@@ -20,6 +20,7 @@ const NAV: Array<{
   label: string;
   icon: IconName;
   badge?: boolean;
+  external?: boolean;
   permission: Permission;
 }> = [
   { href: "/admin", label: "داشبورد", icon: "chart", permission: "dashboard.view" },
@@ -30,6 +31,7 @@ const NAV: Array<{
   { href: "/admin/customers", label: "مشتریان", icon: "user", permission: "customers.view" },
   { href: "/admin/discounts", label: "تخفیف‌ها", icon: "tag", permission: "discounts.edit" },
   { href: "/admin/delivery", label: "مناطق ارسال", icon: "bike", permission: "delivery.edit" },
+  { href: "/OxygenLogoPack.html", label: "پک لوگو", icon: "spark", external: true, permission: "brand.pack.view" },
   { href: "/admin/settings", label: "تنظیمات", icon: "settings", permission: "settings.view" },
 ];
 
@@ -105,19 +107,16 @@ function AdminPanel({ children }: { children: React.ReactNode }) {
         <nav className="space-y-0.5 p-2.5">
           {nav.map((item) => {
             const active =
-              item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[12.5px] font-bold transition-colors",
-                  active
-                    ? "bg-flame-600/10 text-flame-600"
-                    : "text-mist-400 hover:bg-[var(--white-a4)] hover:text-mist-100",
-                )}
-              >
+              !item.external &&
+              (item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href));
+            const classes = cn(
+              "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[12.5px] font-bold transition-colors",
+              active
+                ? "bg-flame-600/10 text-flame-600"
+                : "text-mist-400 hover:bg-[var(--white-a4)] hover:text-mist-100",
+            );
+            const content = (
+              <>
                 <Icon name={item.icon} className="size-4" />
                 <span className="flex-1">{item.label}</span>
                 {item.badge && newOrders > 0 && (
@@ -125,6 +124,28 @@ function AdminPanel({ children }: { children: React.ReactNode }) {
                     <span className="block translate-y-[0.5px] leading-none">{toFa(newOrders)}</span>
                   </span>
                 )}
+              </>
+            );
+
+            return item.external ? (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className={classes}
+              >
+                {content}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={classes}
+              >
+                {content}
               </Link>
             );
           })}

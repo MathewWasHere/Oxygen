@@ -25,6 +25,7 @@ export type Permission =
   | "settings.view"
   | "settings.edit"
   | "roles.manage"
+  | "brand.pack.view"
   | "driver.view";
 
 export const ROLES: Array<{
@@ -53,6 +54,7 @@ export const ROLES: Array<{
       "settings.view",
       "settings.edit",
       "roles.manage",
+      "brand.pack.view",
     ],
   },
   {
