@@ -35,7 +35,6 @@ export default function CheckoutPage() {
   const [requestedStep, setRequestedStep] = useState<Step | null>(null);
   const [addressSheet, setAddressSheet] = useState(false);
   const [editing, setEditing] = useState<string | undefined>();
-  const [payMethod, setPayMethod] = useState<"ONLINE" | "CASH" | "POS">("ONLINE");
   const [paying, setPaying] = useState<"idle" | "redirect" | "success">("idle");
   const [code, setCode] = useState(state.couponCode);
 
@@ -53,19 +52,14 @@ export default function CheckoutPage() {
   const belowMin = zone ? totals.subtotal < zone.minOrder : false;
 
   const pay = () => {
-    if (payMethod === "ONLINE") {
-      setPaying("redirect");
+    setPaying("redirect");
+    setTimeout(() => {
+      setPaying("success");
       setTimeout(() => {
-        setPaying("success");
-        setTimeout(() => {
-          const order = placeOrder({ paymentMethod: payMethod });
-          router.push(`/order?id=${order.id}&new=1`);
-        }, 1100);
-      }, 1600);
-    } else {
-      const order = placeOrder({ paymentMethod: payMethod });
-      router.push(`/order?id=${order.id}&new=1`);
-    }
+        const order = placeOrder({ paymentMethod: "ONLINE" });
+        router.push(`/order?id=${order.id}&new=1`);
+      }, 1100);
+    }, 1600);
   };
 
   if (paying !== "idle") {
@@ -356,39 +350,15 @@ export default function CheckoutPage() {
 
               <div className="surface rounded-2xl pad-panel">
                 <h2 className="text-lg font-extrabold text-mist-100">روش پرداخت</h2>
-                <div className="mt-4 space-y-2.5">
-                  {(
-                    [
-                      { key: "ONLINE" as const, title: "پرداخت آنلاین", desc: "درگاه بانکی امن — سریع‌ترین روش", icon: "shield" as const },
-                      { key: "CASH" as const, title: "پرداخت نقدی درب منزل", desc: "مبلغ را به پیک پرداخت می‌کنید", icon: "bike" as const },
-                      { key: "POS" as const, title: "کارتخوان سیار", desc: "پیک دستگاه کارتخوان همراه دارد", icon: "tag" as const },
-                    ]
-                  ).map((opt) => (
-                    <button
-                      key={opt.key}
-                      onClick={() => setPayMethod(opt.key)}
-                      className={cn(
-                        "flex min-h-16 w-full items-center gap-3 rounded-2xl border p-4 text-right transition-all",
-                        payMethod === opt.key
-                          ? "border-flame-600/60 bg-flame-600/8"
-                          : "border-[var(--surface-border)] bg-ink-850 hover:border-[var(--surface-border-strong)]",
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "grid size-5 place-items-center rounded-full border text-[12px] leading-none tabular-nums",
-                          payMethod === opt.key ? "border-flame-500 bg-flame-500 text-white" : "border-[var(--surface-border-strong)]",
-                        )}
-                      >
-                        {payMethod === opt.key && <Icon name="check" className="size-3" />}
-                      </span>
-                      <Icon name={opt.icon} className="size-5 text-flame-500" />
-                      <span className="flex-1">
-                        <span className="block text-[13px] font-extrabold text-mist-100">{opt.title}</span>
-                        <span className="block text-[13px] text-mist-400">{opt.desc}</span>
-                      </span>
-                    </button>
-                  ))}
+                <div className="mt-4 flex min-h-16 w-full items-center gap-3 rounded-2xl border border-flame-600/60 bg-flame-600/8 p-4 text-right">
+                  <span className="grid size-5 place-items-center rounded-full bg-flame-500 text-white">
+                    <Icon name="check" className="size-3" />
+                  </span>
+                  <Icon name="shield" className="size-5 text-flame-500" />
+                  <span className="flex-1">
+                    <span className="block text-[13px] font-extrabold text-mist-100">درگاه پرداخت آنلاین</span>
+                    <span className="block text-[13px] text-mist-400">پرداخت امن از طریق درگاه بانکی</span>
+                  </span>
                 </div>
 
                 <div className="mt-5 flex gap-3">
@@ -396,7 +366,7 @@ export default function CheckoutPage() {
                     بازگشت
                   </Button>
                   <Button size="lg" className="min-w-0 flex-1" onClick={pay} disabled={needsAddress}>
-                    {payMethod === "ONLINE" ? "پرداخت و ثبت سفارش" : "ثبت سفارش"}
+                    پرداخت و ثبت سفارش
                   </Button>
                 </div>
               </div>

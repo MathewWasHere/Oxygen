@@ -100,7 +100,7 @@ export type OrderStatus =
 
 export type DeliveryMethod = "DELIVERY" | "PICKUP";
 
-export type PaymentMethod = "ONLINE" | "CASH" | "POS";
+export type PaymentMethod = "ONLINE";
 
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED" | "REFUNDED";
 

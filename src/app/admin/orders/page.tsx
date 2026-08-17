@@ -201,11 +201,7 @@ export default function AdminOrdersPage() {
                 {faTime(order.createdAt)}
               </span>
               <span className="rounded-xl border border-[var(--surface-border)] px-3 py-1.5 text-[12px] text-mist-300">
-                {order.payment.method === "ONLINE"
-                  ? "پرداخت آنلاین"
-                  : order.payment.method === "CASH"
-                    ? "نقدی"
-                    : "کارتخوان"}
+                پرداخت آنلاین
                 
               </span>
             </div>

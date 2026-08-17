@@ -185,11 +185,7 @@ function OrderDetailInner() {
             <div className="mt-4 flex items-center gap-2 rounded-2xl border border-[var(--surface-border)] bg-ink-850 p-3">
               <Icon name="shield" className="size-4 text-emerald-500" />
               <span className="text-[13px] text-mist-300">
-                {order.payment.method === "ONLINE"
-                  ? `پرداخت آنلاین — ${order.payment.status === "PAID" ? "موفق" : "در انتظار"}`
-                  : order.payment.method === "CASH"
-                    ? "پرداخت نقدی هنگام تحویل"
-                    : "پرداخت با کارتخوان سیار"}
+                پرداخت آنلاین — {order.payment.status === "PAID" ? "موفق" : "در انتظار"}
               </span>
             </div>
             {order.payment.refId && (

@@ -227,7 +227,7 @@ interface StoreValue {
   deleteAddress: (id: string) => void;
   selectAddress: (id: string) => void;
   toggleFavorite: (productId: string) => void;
-  placeOrder: (opts: { paymentMethod: "ONLINE" | "CASH" | "POS" }) => Order;
+  placeOrder: (opts: { paymentMethod: "ONLINE" }) => Order;
   reorder: (orderId: string) => void;
   setOrderStatus: (orderId: string, status: OrderStatus, note?: string) => void;
   setOrderNote: (orderId: string, note: string) => void;
@@ -436,8 +436,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         etaMinutes: etaFor(selectedAddress?.zoneId, state.cart),
         payment: {
           method: paymentMethod,
-          status: paymentMethod === "ONLINE" ? "PAID" : "PENDING",
-          refId: paymentMethod === "ONLINE" ? `RF${Math.floor(Math.random() * 900000 + 100000)}` : undefined,
+          status: "PAID",
+          refId: `RF${Math.floor(Math.random() * 900000 + 100000)}`,
         },
         customer: { name: state.user?.name ?? "مشتری اکسیژن", phone: state.user?.phone ?? "" },
         events: [
