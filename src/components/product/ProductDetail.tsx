@@ -69,24 +69,26 @@ export function ProductDetail({ product, related }: { product: Product; related:
               className="aspect-square w-full"
               sizes="(max-width:1024px) 100vw, 560px"
             />
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-black/35" />
             <div className="absolute inset-x-4 top-4 flex justify-between">
               <div className="flex gap-2">
                 {product.badges?.map((b) => (
-                  <Badge key={b} className="backdrop-blur-md">
-                    <Icon name="flame" filled className="size-3" />
+                  <span
+                    key={b}
+                    className="inline-flex items-center gap-1 rounded-md bg-flame-600 px-2 py-1 text-[12.5px] font-bold leading-none text-white"
+                  >
+                    <Icon name="flame" filled className="size-2.5 shrink-0" />
                     {b}
-                  </Badge>
+                  </span>
                 ))}
               </div>
               <button
                 onClick={() => toggleFavorite(product.id)}
-                aria-label="افزودن به علاقه‌مندی‌ها"
+                aria-label={fav ? "حذف از علاقه‌مندی‌ها" : "افزودن به علاقه‌مندی‌ها"}
                 className={cn(
-                  "grid size-11 place-items-center rounded-full border backdrop-blur-md transition-all",
+                  "grid size-11 place-items-center rounded-full border transition-all",
                   fav
                     ? "border-flame-600 bg-flame-600 text-white"
-                    : "border-[var(--surface-border)] bg-ink-950 text-white",
+                    : "border-flame-600 bg-ink-950 text-flame-500",
                 )}
               >
                 <Icon name="heart" filled={fav} className="size-5" />
